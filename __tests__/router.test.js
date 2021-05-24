@@ -2,6 +2,7 @@ import { pushToHistory, sum } from '../scripts/router.js';
 /**
  * @jest-environment jsdom
  */
+
 describe('setting branch', () => {
     test('Test the current state object', () => {
         history = pushToHistory('settings');
