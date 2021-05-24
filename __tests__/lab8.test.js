@@ -29,13 +29,14 @@ describe('Basic user flow for SPA ', () => {
 
   it('Test3: Clicking first <journal-entry>, new URL should contain /#entry1', async () => {
     // implement test3: Clicking on the first journal entry should update the URL to contain “/#entry1”
-    let dataOfEntry1;
-    data = await entries[0].getProperty('entry');
+    await page.click('journal-entry');
+    expect(page.url()).toBe('http://127.0.0.1:5500' + '/#entry1');
   });
 
   it('Test4: On first Entry page - checking page header title', async () => {
     // implement test4: Clicking on the first journal entry should update the header text to “Entry 1” 
-
+    const headerTitle = await page.$eval('h1', elem => elem.innerText)
+    expect(headerTitle).toBe('Entry 1');
   });
 
   it('Test5: On first Entry page - checking <entry-page> contents', async () => {
@@ -51,7 +52,17 @@ describe('Basic user flow for SPA ', () => {
           }
         }
       */
-
+    const expectedFirstEntryPage = { 
+      title: 'You like jazz?',
+      date: '4/25/2021',
+      content: "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible.",
+      image: {
+        src: 'https://i1.wp.com/www.thepopcornmuncher.com/wp-content/uploads/2016/11/bee-movie.jpg?resize=800%2C455',
+        alt: 'bee with sunglasses'
+      }
+    };
+    const firstEntryPage = await page.$eval('entry-page', elem => elem.entry);
+    expect(firstEntryPage).toEqual(expectedFirstEntryPage);
   }, 10000);
 
   it('Test6: On first Entry page - checking <body> element classes', async () => {
